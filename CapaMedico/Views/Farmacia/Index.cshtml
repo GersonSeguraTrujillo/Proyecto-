@@ -1,0 +1,317 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutFarm.cshtml";
+}
+
+
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="index.html">Mantenimiento</a></li>
+    <li class="breadcrumb-item active">Medicamentos</li>
+</ol>
+
+<div class="card" style="border-style:outset;border-width:20px">
+    <div class="card-header">
+       
+
+        <label class="form-label" style="font-weight: bolder;">Id Cita : <input type="text" class="form-control" id="txtIdCita" name="referencia" /></label>
+        <button type="button" class="btn btn-dark" id="btBuscar">
+
+            Buscar
+        </button>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-4">
+                    <label class="form-label" style="font-weight: bolder;">Paciente : <input type="text" class="form-control" id="txtIdCita" name="referencia" /></label>
+           
+            </div>
+            <div class="col-sm-4">
+                <label class="form-label" style="font-weight: bolder;">Tratante : <input type="text" class="form-control" id="txtIdCita" name="referencia" /></label>
+            </div>
+            <div class="col-sm-3">
+                <label class="form-label" style="font-weight: bolder;">Fecha : <input type="text" class="form-control" id="txtIdCita" name="referencia" /></label>
+            </div>
+        </div>
+        <hr />
+
+        <table id="usuario" class="display cell-borde" style="width:100%">
+            <thead style="background-color:darkgray; color:black">
+                <tr>
+                    <th>Id</th>
+                    <th>Descripcion</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tr>
+                <td>1</td>
+                <td>Blistes de acetaminofe</td>
+                <td>30.00</td>
+                <td>10</td>
+                <td>300.00</td>
+
+
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Parecetamol</td>
+                <td>40.00</td>
+                <td>280.00</td>
+
+
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Examen del corazom</td>
+                <td>500.00</td>
+                <td>1</td>
+                <td>500.00</td>
+
+
+            </tr>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script>
+
+        var tabladata;
+        var filaSeleccionada;
+
+
+
+             @*tabladata = $("#usuario").DataTable({
+
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                 url: '@Url.Action("ListarEnfermero", "Mantenimiento")',
+                type: "GET",
+                dataType: "json"
+            },
+                 "columns": [
+                     { "data": "IdEnfermero" },
+                {"data":"Nombre"},
+                     { "data": "Apellido" },
+                     { "data": "CodigoConstancia" },
+                     { "data": "EstudiosRealizados" },
+
+
+                {
+                    "defaultContent": ' <button type="button" class="btn btn-outline-secondary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
+                        ' <button type="button" class="btn btn-outline-dark btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
+                    "orderable": false,
+                    "searchable": false,
+                    "width": "90px"
+                }
+
+                 ],
+                 "language": {
+                     "url": "https://cdn.datatables.net/plug-ins/1.12.1/i18n/es-ES.json"
+                 }
+
+
+
+             });*@
+
+        function abrilModal(json) {
+            //$("#txtid").val(0);
+
+            $("#txtid").val(0);
+            $("#txtnombres").val("");
+            $("#txtPrecio").val(0);
+            $("#txtDescripcion").val("");
+            $("#txtTipo").val("");
+
+
+/*            txtnombres txtPrecio txtDescripcion  txtTipo*/
+
+
+
+
+            $("#mensajeError").hide();
+
+
+
+
+
+
+
+            //if (json != null) {
+            //    $("#txtid").val(json.IdEnfermero);
+            //    $("#txtnombres").val(json.Nombre);
+            //    $("#txtapellido").val(json.Apellido);
+            //    $("#txtcodifoconstancia").val(json.CodigoConstancia);
+            //    $("#txtcursosrealizados").val(json.EstudiosRealizados);
+
+
+
+            //}
+
+            $("#FormUsuario").modal("show");
+        }
+
+        $("#usuario tbody").on("click", '.btn-editar', function () {
+
+
+            filaSeleccionada = $(this).closest("tr");
+
+            var data = tabladata.row(filaSeleccionada).data();
+            console.log(data);
+            abrilModal(data)
+
+
+
+
+        })
+
+        $("#usuario tbody").on("click", '.btn-eliminar', function () {
+
+            var usuarioSeleccionado = $(this).closest("tr");
+
+            var data = tabladata.row(usuarioSeleccionado).data();
+
+            swal({
+                title: "Esta Seguro?",
+                text: "¿Desea eliminar el enfermero?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                closeOnConfirm: true
+            },
+                function () {
+
+                      jQuery.ajax({
+                   url: '@Url.Action("EliminarEnfermero", "Mantenimiento")',
+                   type: "POST",
+                   data: JSON.stringify({ id: data.IdEnfermero }),
+                   dataType: "json",
+                   contentType: "application/json; charset=utf-8",
+                   success: function (data) {
+
+
+
+                      if (data.resultado) {
+
+                          tabladata.row(usuarioSeleccionado).remove().draw();
+                     } else {
+
+                           swal("No se pudo eliminar", data.mensaje, "error")
+                       }
+                  },
+                   error: function (error) {
+                   console.log(error)
+                    }
+               });
+
+
+
+
+                });
+
+            console.log(data)
+
+
+        })
+
+
+        function Guardar()
+        {
+
+            $("#FormUsuario").modal("hide");
+        }
+
+        @*function Guardar() {
+            var Enfermero = {
+
+                        IdEnfermero: $("#txtid").val(),
+                        Nombre: $("#txtnombres").val() ,
+                        Apellido: $("#txtapellido").val(),
+                        CodigoConstancia: $("#txtcodifoconstancia").val(),
+                        EstudiosRealizados: $("#txtcursosrealizados").val()
+                       }
+              jQuery.ajax({
+                url: '@Url.Action("GuardarEnfermero", "Mantenimiento")',
+                type: "POST",
+                data: JSON.stringify({ objeto:Enfermero  }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    $(".modal-body").LoadingOverlay("hide");
+
+
+                    //Usuario Nuevo
+                    if (Enfermero.IdEnfermero == 0) {
+
+                        if (data.resultado != 0) {
+
+                            Enfermero.IdEnfermero = data.resultado;
+                            tabladata.row.add(Enfermero).draw(false);
+                            $("#FormUsuario").modal("hide");
+
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+
+                        //Editar Usuario
+                    } else {
+
+                        if (data.resultado) {
+                            tabladata.row(filaSeleccionada).data(Enfermero).draw(false);
+                            filaSeleccionada = null;
+                            $("#FormUsuario").modal("hide");
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+
+                  },
+                  error: function (error) {
+                      $(".modal-body").LoadingOverlay("hide");
+                      $("#mensajeError").text("Error Ajax");
+                      $("#mensajeError").show();
+                  },
+                  beforeSend: function () {
+                      $(".modal-body").LoadingOverlay("show", {
+                          imageResizeFactor: 2,
+                          text: "Cargando...",
+                          size: 14
+                      })
+                  }
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+        }*@
+    </script>
+
+
+}
+
+

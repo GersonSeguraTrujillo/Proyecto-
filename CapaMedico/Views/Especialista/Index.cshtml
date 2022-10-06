@@ -1,0 +1,177 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+
+<hr />
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <h1 style="text-align:center">Agenda del dia</h1>
+            <div class="col-sm-2">
+                <div class="mb-2">
+                    <label class="form-label">Especialidad :</label>
+                    <select id="cboEspecialidad" class="form-control" style="width:200px">
+                    </select>
+                </div>
+
+            </div>
+            <div class="col-sm-3">
+                <div class="mb-3">
+                    <button type="button" class="btn btn-dark" id="btBuscar">
+                        <span class="icon"><i class="fa fa-search"></i></span>
+                        Buscar
+
+                    </button>
+                </div>
+
+            </div>
+        </div>
+       
+
+
+
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12" style="text-align:center">
+                <h1><span class="icon">  <i class="fas fa-list">  </i> </span> Citas</h1>
+            </div>
+        </div>
+        <hr />
+
+        <table id="usuario" class="display cell-borde" style="width:100%">
+            <thead style="background-color:darkgray; color:black">
+                <tr>
+                    <th>Id cita</th>
+                    <th>Paciente</th>
+                    <th>Especialidad</th>
+                    <th>Turno</th>
+
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody>
+          
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script>
+
+        var tabladata;
+        var filaSeleccionada;
+
+
+
+   
+
+
+
+
+        $("#btBuscar").on("click", function () {
+              var Url = '@Url.Action("ListarAgendaDeEspecialista", "Especialista")' +
+            "?IdEspecialidad=" + $("#cboEspecialidad").val();
+
+                    tabladata = $("#usuario").DataTable({
+                        responsive: true,
+                        ordering: false,
+                        "ajax": {
+                            url: Url,
+                            type: "GET",
+                            dataType: "json"
+                        },
+                        "columns":
+                        [
+
+                                { "data": "IdCita" },
+                                { "data": "Paciente" },
+                                { "data": "Especialidad" },
+                                { "data": "Horario" }
+
+                        ],
+                        "language": {
+                            "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
+                        },
+                        retrieve: true,
+                        paging: false
+                    });
+        });
+
+
+
+
+
+
+
+
+        $("#btBuscar").on("click", function () {
+                  var nueva_url = '@Url.Action("ListarAgendaDeEspecialista", "Especialista")' +
+                      "?IdEspecialidad=" + $("#cboEspecialidad").val()
+
+                tabladata.ajax.url(nueva_url).load();
+            })
+
+
+
+
+
+                  jQuery.ajax({
+            url: '@Url.Action("ListarEspecialidad", "Mantenimiento")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+              success: function (data) {
+
+                  console.log(data)
+
+                  $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cboEspecialidad");
+                $.each(data.data, function (index, item) {
+
+                    $("<option>").attr({ "value": item.IdEspecialidad }).text(item.IdEspecialidad + '.) ' + item.Nombre).appendTo("#cboEspecialidad");
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+          });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+}

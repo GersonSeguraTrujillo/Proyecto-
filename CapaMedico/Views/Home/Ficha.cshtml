@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Ficha";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>  <center> Ficha Medica<center /></h1>
+
+<form class="row" style="background-color: cadetblue;width:1170px;border-style:outset;border-width:20px">
+
+    <div class="col-sm-3" style="width:400px;">
+        <div class="mb-3">
+
+        </div>
+        <div class="mb-3">
+            <label class="form-label" style="font-weight: bolder;">Id Cita : <input type="text" class="form-control" id="txtIdCita" name="referencia" /></label>
+            <button type="button" class="btn btn-dark" id="btBuscar">
+
+                Buscar
+            </button>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" style="font-weight: bolder;">Fecha de vista:</label>
+            <input type="text" class="form-control" id="txtFecha" name="referencia" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" style="font-weight: bolder;">Especialista:</label>
+            <input type="text" class="form-control" id="txtEspecialista" name="referencia" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label"style="font-weight: bolder;">Motivo de visita:</label>
+            <textarea type="text" class="form-control" id="txtMotivo" name="Cintomas" style=" width:400px; height:125px;resize:none"></textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label"style="font-weight: bolder;">Rseultados:</label>
+            <textarea type="text" class="form-control" id="txtResultados" name="Cintomas" style=" width:400px; height:125px;resize:none"></textarea>
+        </div>
+    </div>
+    <div class="col-sm-3" style="width:600px;position:relative;right:-50px">
+        
+        <div class="mb-3">
+          
+
+        </div>
+        <div class="mb-3">
+            <label class="form-label" style="font-weight: bolder;">Paciente:<input type="text" class="form-control" id="txtPaciente" name="referencia " style="width: 300px; " /></label>
+          
+        </div>
+        <div class="mb-3">
+            <label class="form-label" style="font-weight: bolder;">Examenes y Medicamentos :</label>
+            <textarea type="text" class="form-control" id="txtCintomas" name="Cintomas" style=" width: 600px; height: 300px; resize: none"></textarea>
+        </div>
+
+    </div>
+
+
+</form>
+
+
+
+@section scripts
+{
+    <script>
+        $(function () {
+    $("#btBuscar").on("click", function () {
+    jQuery.ajax({
+    url: '@Url.Action("VistaFicha", "Especialista")' +
+    "?IdCita=" + $("#txtIdCita").val(),
+    type: "GET",
+    dataType: "json",
+    contentType: "application/json; charset=utf-8",
+    success: function (data) {
+    debugger;
+
+        var ob = data.resultado
+
+        //txtPaciente  txtMotivo txtEspecialista txtFecha txtIdCita txtResultados
+
+    $("#txtIdCita").val(ob.IdCita)
+        $("#txtFecha").val(ob.FechaRegistro)
+        $("#txtEspecialista").val(ob.Especialista)
+        $("#txtMotivo").val(ob.Cintomas)
+        $("#txtResultados").val(ob.Resultados)
+        $("#txtPaciente").val(ob.Paciente)
+
+
+    }
+
+    });
+
+    });
+
+    })
+
+    </script>
+    
+
+
+}

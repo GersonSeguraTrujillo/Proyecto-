@@ -1,0 +1,338 @@
+﻿
+@{
+    ViewBag.Title = "Examenes";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+
+
+
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="index.html">Mantenimiento</a></li>
+    <li class="breadcrumb-item active">Enfermeros</li>
+</ol>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-users me-1"></i> Lista de examanes
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-dark" onclick="abrilModal(null)">
+                    <span class="fas fa-user"> </span>
+                    Nuevo Examen
+
+                </button>
+            </div>
+        </div>
+        <hr />
+
+        <table id="usuario" class="display cell-borde" style="width:100%">
+            <thead style="background-color:darkgray; color:black">
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Descripcion</th>
+
+                    <th></th>
+
+                </tr>
+            </thead>
+        
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="FormUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#00ffff; color:black">
+                <h5 class="modal-title" id="exampleModalLabel">Datos del Examen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="background-color: lemonchiffon">
+                @*<div class="row g-1" style="background-color:gainsboro">*@
+
+                <input id="txtid" type="hidden" value="0">
+                <input id="txtIdTipo" type="hidden" value="1">
+                @*; position: relative; left: 100px*@
+
+                <div class="col-sm-6" style="background-color: lemonchiffon; left: 100px">
+
+                    <label for="txtnombres" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="txtnombres" autocomplete="off" style="border-color:black">
+                    <br />
+                    <label for="txtdescripcion" class="form-label">Precio</label>
+                    <input type="text" class="form-control" id="txtPrecio" autocomplete="off" style="border-color:black">
+                    <br />
+                    <label for="txtdescripcion" class="form-label">Descripcion</label>
+                    <textarea type="text" class="form-control" id="txtDescripcion" name="Descripcion" style=" width:400px; height:125px;resize:none"></textarea>
+                    <br />
+
+
+
+
+
+
+                </div>
+
+
+
+                @*</div>*@
+                <div class="row mt-2">
+                    <div class="col-12" style="background-color:chartreuse">
+
+                        <div id="mensajeError" class="alert alert-danger" role="alert">
+                            A simple danger alert—check it out!
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color:lavender">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="position: relative; right: 175px">
+                    <span>X </span>
+                    Cerrar
+                </button>
+                <button type="button" class="btn btn-primary" onclick="Guardar() " style="position: relative; right: 165px">
+                    <span class="fas fa-download"></span>
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+
+        var tabladata;
+        var filaSeleccionada;
+
+
+
+             tabladata = $("#usuario").DataTable({
+
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                 url: '@Url.Action("ListarExamen", "Laboratorio")',
+                type: "GET",
+                dataType: "json"
+            },
+                 "columns": [
+                     { "data": "IdDescripcionCita" },
+                     { "data":"nombre"},
+                     { "data": "precio" },
+                     { "data": "descripcion" },
+
+
+                {
+                    "defaultContent": ' <button type="button" class="btn btn-outline-secondary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
+                        ' <button type="button" class="btn btn-outline-dark btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
+                    "orderable": false,
+                    "searchable": false,
+                    "width": "90px"
+                }
+
+                 ],
+                 "language": {
+                     "url": "https://cdn.datatables.net/plug-ins/1.12.1/i18n/es-ES.json"
+                 }
+
+
+
+             });
+
+        function abrilModal(json) {
+            //$("#txtid").val(0);
+
+            $("#txtid").val(0);
+            $("#txtnombres").val("");
+            $("#txtPrecio").val(0);
+            $("#txtDescripcion").val("");
+            $("#txtIdTipo").val(1);
+
+
+
+
+
+
+
+            $("#mensajeError").hide();
+
+
+    
+
+
+
+
+            if (json != null) {
+                $("#txtid").val(json.IdDescripcionCita);
+                $("#txtnombres").val(json.nombre);
+                $("#txtPrecio").val(json.precio);
+                $("#txtDescripcion").val(json.descripcion);
+                $("#txtIdTipo").val(1);
+              
+
+
+
+            }
+
+            $("#FormUsuario").modal("show");
+        }
+
+        $("#usuario tbody").on("click", '.btn-editar', function () {
+
+
+            filaSeleccionada = $(this).closest("tr");
+
+            var data = tabladata.row(filaSeleccionada).data();
+            console.log(data);
+            abrilModal(data)
+
+
+
+
+        })
+
+        $("#usuario tbody").on("click", '.btn-eliminar', function () {
+
+            var usuarioSeleccionado = $(this).closest("tr");
+
+            var data = tabladata.row(usuarioSeleccionado).data();
+
+            swal({
+                title: "Esta Seguro?",
+                text: "¿Desea eliminar el enfermero?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                closeOnConfirm: true
+            },
+                function () {
+
+                      jQuery.ajax({
+                   url: '@Url.Action("EliminarExamen", "Laboratorio")',
+                          type: "POST",
+                          data: JSON.stringify({ id: data.IdDescripcionCita }),
+                   dataType: "json",
+                   contentType: "application/json; charset=utf-8",
+                   success: function (data) {
+
+
+
+                      if (data.resultado) {
+
+                          tabladata.row(usuarioSeleccionado).remove().draw();
+                     } else {
+
+                           swal("No se pudo eliminar", data.mensaje, "error")
+                       }
+                  },
+                   error: function (error) {
+                   console.log(error)
+                    }
+               });
+
+
+
+
+                });
+
+            console.log(data)
+
+
+        })
+
+
+  
+
+        function Guardar() {
+            var Examen = {
+              /*  txtnombres txtPrecio txtDescripcion  txtTipo*/
+                IdDescripcionCita: $("#txtid").val(),
+                nombre: $("#txtnombres").val(),
+                precio: $("#txtPrecio").val(),
+                descripcion: $("#txtDescripcion").val(),
+                IdTipo: $("#txtIdTipo").val()
+                       }
+              jQuery.ajax({
+                url: '@Url.Action("GuardarExamen", "Laboratorio")',
+                type: "POST",
+                data: JSON.stringify({ objeto:Examen  }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    $(".modal-body").LoadingOverlay("hide");
+
+
+                    //Usuario examen
+                    if (Examen.IdDescripcionCita == 0) {
+
+                        if (data.resultado != 0) {
+
+                            Examen.IdDescripcionCita = data.resultado;
+                            tabladata.row.add(Examen).draw(false);
+                            $("#FormUsuario").modal("hide");
+
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+
+                        //Editar examne
+                    } else {
+
+                        if (data.resultado) {
+                            tabladata.row(filaSeleccionada).data(Examen).draw(false);
+                            filaSeleccionada = null;
+                            $("#FormUsuario").modal("hide");
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+
+                  },
+                  error: function (error) {
+                      $(".modal-body").LoadingOverlay("hide");
+                      $("#mensajeError").text("Error Ajax");
+                      $("#mensajeError").show();
+                  },
+                  beforeSend: function () {
+                      $(".modal-body").LoadingOverlay("show", {
+                          imageResizeFactor: 2,
+                          text: "Cargando...",
+                          size: 14
+                      })
+                  }
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    </script>
+
+
+}
+

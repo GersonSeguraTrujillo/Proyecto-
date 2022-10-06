@@ -1,0 +1,6 @@
+C:\Users\GERSON\Desktop\Proyecto Asilo\AsiloCabezaDeAlgodon\Capa_Entidad\bin\Debug\Capa_Entidad.dll
+C:\Users\GERSON\Desktop\Proyecto Asilo\AsiloCabezaDeAlgodon\Capa_Entidad\bin\Debug\Capa_Entidad.pdb
+C:\Users\GERSON\Desktop\Proyecto Asilo\AsiloCabezaDeAlgodon\Capa_Entidad\obj\Debug\Capa_Entidad.csproj.AssemblyReference.cache
+C:\Users\GERSON\Desktop\Proyecto Asilo\AsiloCabezaDeAlgodon\Capa_Entidad\obj\Debug\Capa_Entidad.csproj.CoreCompileInputs.cache
+C:\Users\GERSON\Desktop\Proyecto Asilo\AsiloCabezaDeAlgodon\Capa_Entidad\obj\Debug\Capa_Entidad.dll
+C:\Users\GERSON\Desktop\Proyecto Asilo\AsiloCabezaDeAlgodon\Capa_Entidad\obj\Debug\Capa_Entidad.pdb

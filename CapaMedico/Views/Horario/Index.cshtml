@@ -1,0 +1,360 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+
+
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="index.html">citas</a></li>
+    <li class="breadcrumb-item active">Citas</li>
+</ol>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-users me-1"></i> Lista de solictudes
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                @*<button type="button" class="btn btn-dark" onclick="abrilModal(null)">
+                    <span class="fas fa-user"> </span>
+                    Nuevo Cita
+
+                </button>*@
+            </div>
+        </div>
+        <hr />
+
+        <table id="usuario" class="display cell-borde" style="width:100%">
+            <thead style="background-color:darkgray; color:black">
+                <tr>
+                    <th>IdCita</th>
+                    <th>Paciente</th>
+                    <th>Especialidad</th>
+                    <th>Estado</th>
+                    <th>Horario</th>
+               
+
+                    <th>Asignar Turnos</th>
+
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="FormUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#00ffff; color:black">
+                <h5 class="modal-title" id="exampleModalLabel">Datos de la asignacion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="background-color: lemonchiffon">
+
+
+                <input id="txtid" type="hidden" value="0">
+
+
+                <div class="col-sm-6" style="background-color: lemonchiffon; left: 100px">
+
+
+                    <label class="form-label">Estado de la cita</label>
+                    <select id="cboEstado" class="form-control" style="width:400px">
+                    </select>
+                    <br />
+                    <label class="form-label">Harario</label>
+                    <select id="cboHorario" class="form-control" style="width:400px">
+                    </select>
+
+                
+                </div>
+
+
+
+                @*</div>*@
+                <div class="row mt-2">
+                    <div class="col-12" style="background-color:chartreuse">
+
+                        <div id="mensajeError" class="alert alert-danger" role="alert">
+                            A simple danger alert—check it out!
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color:lavender">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="position: relative; right: 175px">
+                    <span>X </span>
+                    Cerrar
+                </button>
+                <button type="button" class="btn btn-primary" onclick="Guardar(); location.reload()" style="position: relative; right: 165px">
+                    <span class="fas fa-download"></span>
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+
+    <script>
+
+        var tabladata;
+        var filaSeleccionada;
+
+
+
+             tabladata = $("#usuario").DataTable({
+
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                 url: '@Url.Action("ListarSolitudes", "Horario")',
+                type: "GET",
+                dataType: "json"
+
+                },
+                 "columns": [
+                     { "data": "IdCita" },
+                     { "data": "Paciente" },
+                     { "data": "Especialidad" },
+                     {
+
+                         "data": "oEstado", "render": function (data) {
+
+                             return data.Descripcion
+                         }
+                     },
+                     {
+
+                         "data": "oTurno", "render": function (data) {
+
+                             return data.Horario
+                         }
+                     },
+
+                     
+                    
+
+                {
+                    "defaultContent": ' <button type="button" class="btn btn-outline-secondary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' ,
+                    "orderable": false,
+                    "searchable": false,
+                    "width": "90px"
+                }
+
+                 ],
+                 "language": {
+                     "url": "https://cdn.datatables.net/plug-ins/1.12.1/i18n/es-ES.json"
+                 }
+
+
+
+             });
+
+
+
+
+
+
+                      jQuery.ajax({
+            url: '@Url.Action("ListarEstado", "Mantenimiento")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+              success: function (data) {
+
+                  console.log(data)
+
+                  $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cboEstado");
+                $.each(data.data, function (index, item) {
+
+                    $("<option>").attr({ "value": item.IdEstado }).text(item.Descripcion).appendTo("#cboEstado");
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+                      });
+        @* cboEstado cboHorario *@
+
+            jQuery.ajax({
+            url: '@Url.Action("ListarTurno", "Horario")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+              success: function (data) {
+
+                  console.log(data)
+
+                  $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cboHorario");
+                $.each(data.data, function (index, item) {
+
+                    $("<option>").attr({ "value": item.NoTurno }).text(item.Horario).appendTo("#cboHorario");
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+                });
+
+  
+
+
+
+
+
+
+        function abrilModal(json) {
+            //$("#txtid").val(0);
+
+
+
+
+
+            $("#txtid").val(0);
+ 
+            $("#cboEstado").val($("#cboEstado option:first").val());
+            $("#cboHorario").val($("#cboHorario option:first").val());
+
+
+            $("#mensajeError").hide();
+
+
+
+
+            if (json != null) {
+                $("#txtid").val(json.IdCita);
+                $("#cboHorario").val(json.oTurno.NoTurno);
+                $("#cboEstado").val(json.oEstado.IdEstado);
+
+
+
+
+            }
+
+            $("#FormUsuario").modal("show");
+        }
+
+        $("#usuario tbody").on("click", '.btn-editar', function () {
+
+
+            filaSeleccionada = $(this).closest("tr");
+
+            var data = tabladata.row(filaSeleccionada).data();
+            console.log(data);
+            abrilModal(data)
+
+
+
+
+        })
+
+   
+
+
+        function Guardar() {
+            var AsignarHorario = {
+                 //txtid cboMedico  cboPaciente txtCintomas cboespecialista  cboEnfermero txtPrecio cboEstado
+                IdCita: $("#txtid").val(),
+
+            @* cboEstado cboHorario *@
+                oEstado: {
+                    IdEstado: $("#cboEstado option:selected").val(),
+                    Descripcion: $("#cboEstado option:selected").text()
+                },
+                oTurno: {
+                    NoTurno: $("#cboHorario option:selected").val(),
+                    Horario: $("#cboHorario option:selected").text()
+                },
+            }
+              jQuery.ajax({
+                url: '@Url.Action("AsignarHorario", "Horario")',
+                  type: "POST",
+                  data: JSON.stringify({ objeto: AsignarHorario }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    $(".modal-body").LoadingOverlay("hide");
+
+
+                    //Usuario cita
+                    if (AsignarHorario.IdCita == 0) {
+
+                        if (data.resultado != 0) {
+
+                            AsignarHorario.IdCita = data.resultado;
+                            tabladata.row.add(AsignarHorario).draw(false);
+                            $("#FormUsuario").modal("hide");
+
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+
+                        //Editar cita
+                    } else {
+
+                        if (data.resultado) {
+                            tabladata.row(filaSeleccionada).data(AsignarHorario).draw(false);
+                            filaSeleccionada = null;
+                            $("#FormUsuario").modal("hide");
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+
+                  },
+                  error: function (error) {
+                      $(".modal-body").LoadingOverlay("hide");
+                      $("#mensajeError").text("Error Ajax");
+                      $("#mensajeError").show();
+                  },
+                  beforeSend: function () {
+                      $(".modal-body").LoadingOverlay("show", {
+                          imageResizeFactor: 2,
+                          text: "Cargando...",
+                          size: 14
+                      })
+                  }
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    </script>
+
+
+}
+
+
+
+
+
+
+
+
+

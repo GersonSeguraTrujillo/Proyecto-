@@ -1,0 +1,576 @@
+﻿
+@{
+    ViewBag.Title = "MedicamentoExamanen";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+
+
+<br />
+
+<div class="card">
+    <hr />
+    <h1 style="text-align:center">  Visita Medica </h1>
+    <form id="contenedor" class="row" style="background-color:lightgray; border:black" >
+        <div class="col-sm-3">
+            <div class="mb-3">
+                <label class="form-label">Id de Cita</label>
+                <input type="text" class="form-control" id="txtIdCita" name="idcita" value="0" />
+            </div>
+            <div class="mb-3">
+                <button type="button" class="btn btn-dark" id="btBuscar">
+                    buscar
+                    <span class="fa fa-search"> </span>
+                    
+                </button>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="mb-3">
+                <label class="form-label">Paciente</label>
+                <input type="text" class="form-control" id="txtNombre" name="nombre" autocomplete="off" />
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="mb-3">
+                <label class="form-label">Padecimientos</label>
+                <textarea type="text" class="form-control" id="txtPadecimientos" name="Padecimiento" style="height:125px;resize:none"></textarea>
+            </div>
+
+        </div>
+        <div class="col-sm-3" style=" border: 5px solid black">
+            <div class="mb-3" style="text-align: center">
+
+                <label class="form-label">Estado de la cita</label>
+                <select id="cboEstado" class="form-control">
+                </select>
+                <br />
+                <button type="button" class="btn btn-dark" id="btBuscar" onclick="ActualizarEstado()">
+                    Actualizar
+
+
+                </button>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12" >
+
+                    <div id="mensajeError2" class="alert alert-danger" role="alert">
+                        A simple danger alert—check it out!
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </form>
+    <hr />
+    @*<div class="col-sm-2" style="background-color: lemonchiffon">
+            <div>
+                <label for="txtNoCita" class="form-label">No Cita</label>
+                <input type="text" class="form-control" id="txtNoCita" autocomplete="off" style="border-color:black">
+
+                <br />
+                <label for="txtNoCita" class="form-label">Paciente</label>
+                <input type="text" class="form-control" id="txtNombre" autocomplete="off" style="border-color:black">
+                <br />
+                <label for="txtNoCita" class="form-label">Padecimiento</label>
+                <input type="text" class="form-control" id="txtNoCita" autocomplete="off" style="border-color:black">
+
+            </div>
+            <br />
+            <label for="txtPadecimientos" class="form-label">Padeciminetos</label>
+            <textarea type="text" class="form-control" id="txtPadecimientos" name="Padeciminetos" style="height:125px;resize:none"></textarea>
+            <br />
+            <label for="txtResultados" class="form-label">Resultados</label>
+            <textarea type="text" class="form-control" id="txtResultados" name="resultados" style="height:125px;resize:none"></textarea>
+            <br />
+            <div>
+
+            </div>
+
+        </div>*@
+
+
+ 
+<div class="card-body">
+    <div >
+        <h1 style="text-align:center">  Asignacion de Examanes</h1>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-dark" onclick="abrilModal(null); cambiar()">
+                <span class="fas fa-user"> </span>
+                Agregar Examen
+
+            </button>
+        </div>
+    </div>
+    <hr />
+
+    <table id="usuario" class="display cell-borde" style="width:100%">
+        <thead style="background-color:darkgray; color:black">
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="FormUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#00ffff; color:black">
+                <h5 class="modal-title" id="exampleModalLabel">Datos de la especialidad</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="background-color: lemonchiffon">
+                @*<div class="row g-1" style="background-color:gainsboro">*@
+
+                <input id="txtid" type="hidden" value="0">
+                <input id="txtCantidad" type="hidden" value="1">
+                @*; position: relative; left: 100px*@
+
+                <div class="col-sm-6" style="background-color: lemonchiffon; left: 100px">
+
+                    <label for="txtnombres" class="form-label">Id Cita</label>
+                    <input type="text" class="form-control" id="cita" autocomplete="off" style="border-color:black">
+                    <br />
+                    <label class="form-label">Examen:</label>
+                    <select id="cboMedicamentoExamen" class="form-control" style="width:400px">
+                    </select>
+                    @*<label for="txtdescripcion" class="form-label">Cantidad</label>
+            <input type="text" class="form-control" id="txtCantidad" autocomplete="off" style="border-color:black">
+            <br />*@
+
+
+
+
+
+                </div>
+
+
+
+                @*</div>*@
+                <div class="row mt-2">
+                    <div class="col-12" style="background-color:chartreuse">
+
+                        <div id="mensajeError" class="alert alert-danger" role="alert">
+                            A simple danger alert—check it out!
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color:lavender">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="position: relative; right: 175px">
+                    <span>X </span>
+                    Cerrar
+                </button>
+                <button type="button" class="btn btn-primary" onclick="Guardar() " style="position: relative; right: 165px" id="boton">
+                    <span class="fas fa-download"></span>
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+
+        var tabladata;
+        var filaSeleccionada;
+
+
+
+
+
+
+        $(document).ready(function () {
+            $("#mensajeError2").hide();
+
+                })
+
+
+        $("#boton").on("click", function () {
+
+
+
+        var Url = '@Url.Action("ListaGastosMedicos", "Especialista")' +
+            "?IdCita=" + $("#cita").val();
+        debugger;
+        tabladata = $("#usuario").DataTable({
+
+                        responsive: true,
+                        ordering: false,
+                        "ajax": {
+                            url: Url,
+                            type: "GET",
+                            dataType: "json"
+                        },
+                        "columns":
+                        [
+
+                            { "data": "IdCita" },
+                                { "data": "oExamen", "render": function (data) { return data.nombre } },
+                                { "data": "oExamen", "render": function (data) { return data.descripcion } },
+                            {
+                                "defaultContent": 
+                                    ' <button type="button" class="btn btn-outline-dark btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
+                                "orderable": false,
+                                "searchable": false,
+                                "width": "90px"
+                            }
+                        ],
+                        "language": {
+                            "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
+            },
+            retrieve: true,
+            paging: false
+                    });
+
+
+        });
+
+
+        $("#boton").on("click", function () {
+                  var nueva_url = '@Url.Action("ListaGastosMedicos", "Especialista")' +
+                      "?IdCita=" + $("#cita").val()
+
+            tabladata.ajax.url(nueva_url).load();
+
+
+
+
+
+            })
+
+
+
+
+
+                  jQuery.ajax({
+            url: '@Url.Action("ListarExamen", "Laboratorio")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+              success: function (data) {
+
+                  console.log(data)
+
+                  $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cboMedicamentoExamen");
+                $.each(data.data, function (index, item) {
+
+                    $("<option>").attr({ "value": item.IdDescripcionCita }).text(item.IdDescripcionCita + '.) ' + item.nombre).appendTo("#cboMedicamentoExamen");
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+          });
+
+
+
+                      jQuery.ajax({
+            url: '@Url.Action("ListarEstado", "Mantenimiento")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+              success: function (data) {
+
+                  console.log(data)
+
+                  $("<option>").attr({ "value": "3", "disabled": "true" }).text("SeleccioneActualizacion").appendTo("#cboEstado");
+                $.each(data.data, function (index, item) {
+
+                    $("<option>").attr({ "value": item.IdEstado }).text(item.Descripcion).appendTo("#cboEstado");
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+                      });
+
+        var id = document.getElementById('txtIdCita').value;
+
+        function cambiar() {
+
+            var ci = document.getElementById('txtIdCita').value;
+            document.getElementById('cita').value = ci;
+
+        }
+
+        function abrilModal(json) {
+            //$("#txtid").val(0);
+
+            $("#txtid").val(0);
+
+            $("#txtCantidad").val(1);
+            $("#cboMedicamentoExamen").val($("#cboMedicamentoExamen option:first").val());
+
+
+            $("#mensajeError").hide();
+
+          
+
+            //if (json != null) {
+            //    $("#txtid").val(json.IdEspecialidad);
+            //    $("#txtnombres").val(json.Nombre);
+            //    $("#txtdescripcion").val(json.Descripcion);
+
+
+
+
+            //}
+
+            $("#FormUsuario").modal("show");
+
+        }
+
+
+
+
+        $("#usuario tbody").on("click", '.btn-eliminar', function () {
+
+            var usuarioSeleccionado = $(this).closest("tr");
+            var data = tabladata.row(usuarioSeleccionado).data();
+
+            swal({
+                title: "Esta Seguro?",
+                text: "¿Desea eliminar la examen?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                closeOnConfirm: true
+            },
+            function () {
+                debugger;
+                   jQuery.ajax({
+                       url: '@Url.Action("EliminarGastos", "Especialista")',
+                       type: "POST",
+                       data: JSON.stringify({ id: data.IdCita, i: data.oExamen.IdDescripcionCita }),
+                   dataType: "json",
+                   contentType: "application/json; charset=utf-8",
+                   success: function (data) {
+
+                      if (data.resultado) {
+                          tabladata.row(usuarioSeleccionado).remove().draw();
+                      }
+                      else{
+                           swal("No se pudo eliminar", data.mensaje, "error")
+                       }
+                  },
+                   error: function (error) {
+                   console.log(error)
+                    }
+               });
+
+
+
+
+                });
+
+            console.log(data)
+
+
+        })
+
+
+         function ActualizarEstado() {
+            var ActualizarEstado = {
+
+                IdCita: $("#txtIdCita").val(),
+                oEstado: {
+                    IdEstado: $("#cboEstado option:selected").val(),
+                    Descripcion: $("#cboEstado option:selected").text()
+                }
+
+            }
+              jQuery.ajax({
+                url: '@Url.Action("ActualizacionEstadoCita", "Especialista")',
+                type: "POST",
+                data: JSON.stringify({ objeto: ActualizarEstado }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    $(".modal-body").LoadingOverlay("hide");
+
+
+                 
+
+                        if (data.resultado != false) {
+
+                            ActualizarEstado.IdCita = data.resultado;
+                            //tabladata.row.add(Especialidad).draw(false);
+                            //$("#FormUsuario").modal("hide");
+                            $("#mensajeError2").text("Sea actualizado el estado");
+                            $("#mensajeError2").show();
+
+                        } else {
+                            $("#mensajeError2").text(data.mensaje);
+                            $("#mensajeError2").show();
+                        }
+
+
+
+                  },
+                  error: function (error) {
+                      $(".modal-body").LoadingOverlay("hide");
+                      $("#mensajeError").text("Error Ajax");
+                      $("#mensajeError").show();
+                  },
+                  beforeSend: function () {
+                      $(".modal-body").LoadingOverlay("show", {
+                          imageResizeFactor: 2,
+                          text: "Cargando...",
+                          size: 14
+                      })
+                  }
+
+            });
+
+
+      }
+
+
+
+
+        function Guardar() {
+            $("#mensajeError2").hide();
+            var GastosMedicos = {
+
+                IdCita: $("#cita").val(),
+                oExamen: {
+                    IdDescripcionCita: $("#cboMedicamentoExamen option:selected").val(),
+                    nombre: $("#cboMedicamentoExamen option:selected").text()
+                },
+                Cantidad: $("#txtCantidad").val(),
+                /* cita cboMedicamentoExamen  txtCantidad*/
+
+            }
+            jQuery.ajax({
+
+                url: '@Url.Action("RegistrarGastoMedico", "Especialista")',
+                type: "POST",
+                data: JSON.stringify({ objeto: GastosMedicos }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    $(".modal-body").LoadingOverlay("hide");
+
+
+
+
+
+                        if (data.resultado !=0) {
+
+                            GastosMedicos.IdCita = data.resultado;
+                           /* tabladata.row.add(GastosMedicos).draw(false);*/
+                            $("#FormUsuario").modal("hide");
+
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+
+
+
+                },
+                error: function (error) {
+                    $(".modal-body").LoadingOverlay("hide");
+                    $("#mensajeError").text("Error Ajax");
+                    $("#mensajeError").show();
+                },
+                beforeSend: function () {
+                    $(".modal-body").LoadingOverlay("show", {
+                        imageResizeFactor: 2,
+                        text: "Cargando...",
+                        size: 14
+                    })
+                }
+
+            });
+
+        }
+
+       /*                         txtNombre txtPadecimientos txtResultados*/
+        /*          btBuscar txtIdCita  txtNombre txtPadecimientos txtResultados*/
+
+
+        $(function () {
+            $("#btBuscar").on("click", function () {
+
+                $("#cboEstado").val($("#cboEstado option:first").val());
+                $("#mensajeError2").hide();
+                debugger;
+                jQuery.ajax({
+                    url: '@Url.Action("VistaPaciente", "Especialista")' +
+                        "?IdCita=" + $("#txtIdCita").val(),
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        debugger;
+
+                        var ob = data.resultado;
+                        ///* txtIdCita txtNombre txtResultados txtPadecimientos*/
+                        // $("#txtPadecimientos").text(data.Cintomas)
+                        //    /* $("#txtIdCita").text(objeto.IdCita)*/
+                        // $("#txtIdCita").text(data.IdCita)
+                        // $("#txtNombre").text (data.Paciente)
+                        // $("#txtResultados").text(data.Resultados)
+
+                        $("#txtIdCita").val(ob.IdCita)
+
+                        $("#txtNombre").val(ob.Nombre)
+                        $("#txtPadecimientos").val(ob.Cintomas)
+
+                        $("#txtResultados").val(ob.Resultados)
+
+
+
+                    }
+
+                });
+
+            });
+
+        }
+        )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+}
+
+

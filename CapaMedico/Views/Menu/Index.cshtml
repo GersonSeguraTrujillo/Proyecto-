@@ -1,0 +1,138 @@
+﻿
+@{
+    Layout = null;
+}
+
+@*<!DOCTYPE html>*@
+
+@*<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        <a class="nav-link" href="@Url.Action("Index","Login")" style="color:black">
+            <div class="sb-nav-link-icon" style="color:black"><i class="fa fa-users"></i></div>
+            Turnos
+        </a>
+
+
+    </div>
+</body>
+</html>*@
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+<body @*class="bg-primary"*@ style="background-color:darkgrey">
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header"><h3 class="text-center font-weight-light my-4">Asilo Cabeza de Algodon</h3></div>
+                                <div class="card-body">
+                                    <form>
+                                        <div style="background-color: chartreuse; display: flex; justify-content: center; margin:10px ">
+                                            <a class="nav-link" href="@Url.Action("Index","Login")" style="color:black">
+                                                <div class="sb-nav-link-icon" style="color:black"><i class="fa fa-users"></i></div>
+                                                Medico
+                                            </a>
+                                        </div>
+                                        <div style="background-color: cadetblue; display: flex; justify-content: center; margin: 10px">
+                                            <a class="nav-link" href="@Url.Action("Index","LoginHorario")" style="color:black">
+                                                <div class="sb-nav-link-icon" style="color:black"><i class="fa fa-users"></i></div>
+                                                Asignacion de Turnos
+                                            </a>
+                                        </div>
+                                        <div style="background-color: gold; display: flex; justify-content: center; margin: 10px">
+                                            <a class="nav-link" href="@Url.Action("Index","LoginEspecialista")" style="color:black">
+                                                <div class="sb-nav-link-icon" style="color:black"><i class="fa fa-users"></i></div>
+                                                Especialista
+                                            </a>
+                                        </div>
+                                        <div style="background-color: orangered; display: flex; justify-content: center; margin: 10px">
+                                            <a class="nav-link" href="@Url.Action("Index","LoginLaboratorio")" style="color:black">
+                                                <div class="sb-nav-link-icon" style="color:black"><i class="fa fa-users"></i></div>
+                                                Laboratorio
+                                            </a>
+                                        </div>
+                                        <div style="background-color: springgreen; display: flex; justify-content: center; margin: 10px">
+                                            <a class="nav-link" href="@Url.Action("Index","LoginFarmacia")" style="color:black">
+                                                <div class="sb-nav-link-icon" style="color:black"><i class="fa fa-users"></i></div>
+                                                Famarcia
+                                            </a>
+                                        </div>
+                                        <div style="background-color: cornflowerblue; display: flex; justify-content: center; margin: 10px">
+                                            <a class="nav-link" href="@Url.Action("Index","LoginAdmin")" style="color:black">
+                                                <div class="sb-nav-link-icon" style="color:black"><i class="fa fa-users"></i></div>
+                                                Administrador
+                                            </a>
+                                        </div>
+
+
+                                    </form>
+                                </div>
+                                <div class="card-footer text-center py-3">
+                                    <div class="small">Mazatenango, Suchitepequez Guatemala</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <div id="layoutAuthentication_footer">
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">GersonST &copy; Año 2022</div>
+                       
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+
+
+    <script>
+
+        function ver() {
+
+            var x = document.getElementById("con");
+            if (x.type == "password") {
+
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
+
+
+
+
+
+
+
+
+</body>
+</html>
+
